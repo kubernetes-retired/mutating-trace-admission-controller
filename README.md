@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/sigs.k8s.io/mutating-trace-admission-controller)](https://goreportcard.com/report/sigs.k8s.io/mutating-trace-admission-controller)
+[![Build Status](https://travis-ci.org/kubernetes-sigs/mutating-trace-admission-controller.svg?branch=master)](https://travis-ci.org/kubernetes-sigs/mutating-trace-admission-controller)
+
 # Mutating trace admission controller
 
 [Mutating admission controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) that injects base64 encoded [OpenCensus span context](https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/Span.md#spancontext) into the `trace.kubernetes.io/context` object annotation.
@@ -26,3 +29,4 @@ There are example patches which can be used with `kustomize` to configure the de
 `kustomize build deploy/overlays/example | kubectl apply -f -`
 
 This can be used, for example, to set different sampling policies between production and staging clusters.
+

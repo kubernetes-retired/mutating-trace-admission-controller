@@ -1,0 +1,21 @@
+language: go
+
+os:
+  - linux
+
+go:
+- 1.11.x
+
+git:
+  depth: 1
+
+# Dependencies included in vendor
+install: true
+
+script:
+  - go test
+
+
+# Leave out email notifications.
+notifications:
+  email: false
