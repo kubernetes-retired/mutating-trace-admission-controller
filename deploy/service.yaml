@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trace-context-injector-webhook-svc
+  labels:
+    app: trace-context-injector
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    app: trace-context-injector
