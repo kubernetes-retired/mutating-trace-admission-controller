@@ -1,9 +1,7 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trace-context-injector-webhook-deployment
-  labels:
-    app: trace-context-injector
 spec:
   replicas: 1
   template:
@@ -15,9 +13,6 @@ spec:
         - name: trace-context-injector
           image: k8s.gcr.io/trace-context-injector:latest
           imagePullPolicy: Always 
-          args:
-            - -tlsCertFile=/etc/webhook/certs/cert.pem
-            - -tlsKeyFile=/etc/webhook/certs/key.pem
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs

@@ -2,8 +2,6 @@ apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
   name: trace-context-injector-webhook-cfg
-  labels:
-    app: trace-context-injector
 webhooks:
   - name: trace-context-injector.k8s.io
     clientConfig:

@@ -2,7 +2,7 @@ IMAGE=trace-context-injector
 
 clean:
 	@echo 'Removing generated configurations and local image build...'
-	rm deploy/mutatingwebhook-ca-bundle.yaml
+	rm deploy/base/mutatingwebhook-ca-bundle.yaml
 	docker rmi -f $(IMAGE)
 
 # docker commands
@@ -18,7 +18,7 @@ cluster-down: delete-config delete-certs
 deploy-certs:
 	@echo 'Generating certs and deploying into active cluster...'
 	hack/webhook-create-signed-cert.sh --service trace-context-injector-webhook-svc --secret trace-context-injector-webhook-certs --namespace default
-	cat deploy/mutatingwebhook.yaml | hack/webhook-patch-ca-bundle.sh > deploy/mutatingwebhook-ca-bundle.yaml
+	cat deploy/base/mutatingwebhook.yaml | hack/webhook-patch-ca-bundle.sh > deploy/base/mutatingwebhook-ca-bundle.yaml
 
 delete-certs:
 	@echo 'Deleting mutating controller certs...'
@@ -26,12 +26,8 @@ delete-certs:
 
 deploy-config:
 	@echo 'Applying configuration to active cluster...'
-	kubectl apply -f deploy/deployment.yaml
-	kubectl apply -f deploy/mutatingwebhook-ca-bundle.yaml
-	kubectl apply -f deploy/service.yaml
+	kustomize build deploy/overlays/default | kubectl apply -f -
 
 delete-config:
 	@echo 'Tearing down mutating controller and associated resources...'
-	kubectl delete -f deploy/deployment.yaml
-	kubectl delete -f deploy/mutatingwebhook-ca-bundle.yaml
-	kubectl delete -f deploy/service.yaml
+	kustomize build deploy/overlays/default | kubectl delete -f -

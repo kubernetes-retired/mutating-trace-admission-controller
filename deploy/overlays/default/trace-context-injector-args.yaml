@@ -1,0 +1,14 @@
+# This patch sets arguments for the trace context injector
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trace-context-injector-webhook-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: trace-context-injector
+        args:
+          - -rate=1.0                 
+          - -tlsCertFile=/etc/webhook/certs/cert.pem
+          - -tlsKeyFile=/etc/webhook/certs/key.pem
