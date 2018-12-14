@@ -21,4 +21,8 @@ The included `Makefile` makes these steps straightforward and the available comm
 * `make cluster-up`: apply certificate configuration and deployment configuration to cluster for the mutating webhook
 * `make cluster-down`: delete resources associated with the mutating webhook from the active cluster
 
+There are example patches which can be used with `kustomize` to configure the deployment of this webhook into your cluster under `deploy/base/overlays/example`. This example custom configuration can be applied with:  
 
+`kustomize build deploy/overlays/example | kubectl apply -f -`
+
+This can be used, for example, to set different sampling policies between production and staging clusters.

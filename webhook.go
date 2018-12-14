@@ -29,13 +29,6 @@ type WebhookServer struct {
 	server *http.Server
 }
 
-// WebhookServerParameters represents all config we need to initialize the webhook server
-type WebhookServerParameters struct {
-	port     int
-	certFile string
-	keyFile  string
-}
-
 type patchOperation struct {
 	Op    string      `json:"op"`
 	Path  string      `json:"path"`

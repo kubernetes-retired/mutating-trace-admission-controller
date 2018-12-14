@@ -1,5 +1,0 @@
-
-bases:
-- ../../base
-patches:
-- trace-context-injector-args.yaml

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trace-context-injector-webhook-config-map
+data:
+  config.yaml: |
+    trace:
+      sampleRate: 0.1

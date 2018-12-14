@@ -11,27 +11,43 @@ import (
 	"syscall"
 
 	"github.com/golang/glog"
+	"go.opencensus.io/trace"
 )
 
 func main() {
-	var parameters WebhookServerParameters
-	var traceConfig TraceConfig
 
-	// get command line parameters
-	flag.Float64Var(&traceConfig.samplingRate, "rate", 1.00, "Float between 0.0 and 1.0 inclusive which sets the probability that any given span context is sampled")
-	flag.IntVar(&parameters.port, "port", 443, "Webhook server port.")
-	flag.StringVar(&parameters.certFile, "tlsCertFile", "/etc/webhook/certs/cert.pem", "File containing the x509 Certificate for HTTPS.")
-	flag.StringVar(&parameters.keyFile, "tlsKeyFile", "/etc/webhook/certs/key.pem", "File containing the x509 private key to --tlsCertFile.")
+	// read configuration location from command line arg
+	var configPath string
+	flag.StringVar(&configPath, "configPath", DefaultConfigPath, "Path that points to the YAML configuration for this webhook.")
 	flag.Parse()
 
-	pair, err := tls.LoadX509KeyPair(parameters.certFile, parameters.keyFile)
+	// parse and validate configuration
+	config := Config{}
+
+	ok, err := ParseConfigFromPath(&config, configPath)
+	if !ok {
+		glog.Errorf("configuration parse failed with error: %v", err)
+		return
+	}
+
+	ok, err = config.Validate()
+	if !ok {
+		glog.Errorf("configuration validation failed with error: %v", err)
+		return
+	}
+
+	// configure global tracer
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.ProbabilitySampler(config.Trace.SampleRate)})
+
+	// configure certificates
+	pair, err := tls.LoadX509KeyPair("/etc/webhook/certs/cert.pem", "/etc/webhook/certs/key.pem")
 	if err != nil {
 		glog.Errorf("Failed to load key pair: %v", err)
 	}
 
 	whsvr := &WebhookServer{
 		server: &http.Server{
-			Addr:      fmt.Sprintf(":%v", parameters.port),
+			Addr:      fmt.Sprintf(":%v", 443),
 			TLSConfig: &tls.Config{Certificates: []tls.Certificate{pair}},
 		},
 	}
@@ -39,13 +55,6 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/mutate", whsvr.serve)
 	whsvr.server.Handler = mux
-
-	// pass configuration through here
-	err = ConfigureTracing(&traceConfig)
-	if err != nil {
-		glog.Errorf("could not validate passed tracing configuration: %v", err)
-		return
-	}
 
 	// begin webhook server
 	go func() {

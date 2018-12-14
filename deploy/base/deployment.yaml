@@ -12,12 +12,19 @@ spec:
       containers:
         - name: trace-context-injector
           image: k8s.gcr.io/trace-context-injector:latest
-          imagePullPolicy: Always 
+          imagePullPolicy: Always
+          args:
+            - -configPath=/etc/webhook/config/config.yaml
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs
               readOnly: true
+            - name: webhook-config
+              mountPath: /etc/webhook/config
       volumes:
         - name: webhook-certs
           secret:
             secretName: trace-context-injector-webhook-certs
+        - name: webhook-config
+          configMap:
+            name: trace-context-injector-webhook-config-map

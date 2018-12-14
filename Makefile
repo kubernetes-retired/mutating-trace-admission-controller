@@ -26,8 +26,8 @@ delete-certs:
 
 deploy-config:
 	@echo 'Applying configuration to active cluster...'
-	kustomize build deploy/overlays/default | kubectl apply -f -
+	kustomize build deploy/base | kubectl apply -f -
 
 delete-config:
 	@echo 'Tearing down mutating controller and associated resources...'
-	kustomize build deploy/overlays/default | kubectl delete -f -
+	kustomize build deploy/base | kubectl delete -f -
