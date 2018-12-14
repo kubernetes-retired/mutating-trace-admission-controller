@@ -1,0 +1,7 @@
+commonLabels:
+  app: trace-context-injector
+resources:
+  - deployment.yaml
+  - mutatingwebhook-ca-bundle.yaml
+  - service.yaml
+  - configmap.yaml

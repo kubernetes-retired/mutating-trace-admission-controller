@@ -1,2 +1,2 @@
 main
-deployment/mutatingwebhook-ca-bundle.yaml
+deploy/base/mutatingwebhook-ca-bundle.yaml
