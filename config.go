@@ -13,9 +13,12 @@ const DefaultConfigPath = "/etc/webhook/config/config.yaml"
 
 // Config represents all config we need to initialize the webhook server
 type Config struct {
-	Trace struct {
-		SampleRate float64 `yaml:"sampleRate"`
-	}
+	Trace Trace `yaml:"trace"`
+}
+
+// Trace is the configuration for the trace context added to pods
+type Trace struct {
+	SampleRate float64 `yaml:"sampleRate"`
 }
 
 // ParseConfigFromPath reads YAML config into config struct
