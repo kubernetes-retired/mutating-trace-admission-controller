@@ -6,7 +6,6 @@
 
 The trace context injected with this mutating controller can be used by Kubernetes components to export traces associated with object lifecycles. For more information on this effort, [please refer to the official KEP](https://github.com/kubernetes/enhancements/pull/650).
 
-
 ## Quick start
 
 The structure of this mutating admission controller was informed by the [mutating admission webhook found here](https://github.com/morvencao/kube-mutating-webhook-tutorial). The basic idea is as follows:
@@ -26,3 +25,16 @@ There are example patches which can be used with `kustomize` to configure the de
 `kustomize build deploy/overlays/example | kubectl apply -f -`
 
 This can be used, for example, to set different sampling policies between production and staging clusters.
+
+## Community, discussion, contribution, and support
+
+Learn how to engage with the Kubernetes community on the [community page](http://kubernetes.io/community/).
+
+You can reach the maintainers of this project at:
+
+- [Slack channel](https://kubernetes.slack.com/messages/sig-instrumentation)
+- [Mailing list](https://groups.google.com/forum/#!forum/kubernetes-sig-instrumentation)
+
+### Code of conduct
+
+Participation in the Kubernetes community is governed by the [Kubernetes Code of Conduct](code-of-conduct.md).
