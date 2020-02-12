@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The trace context injected with this mutating controller can be used by Kubernetes components to export traces associated with object lifecycles. For more information on this effort, [please refer to the official KEP](https://github.com/kubernetes/enhancements/pull/650).
+This component was previously proposed as a way to create the initial trace context for [kubernetes/enhancements#650](https://github.com/kubernetes/enhancements/pull/650).  However, **the KEP no longer proposes using this mutating admission controller**.
 
 ## Quick start
 
